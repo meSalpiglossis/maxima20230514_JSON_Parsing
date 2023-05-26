@@ -14,12 +14,12 @@ public class GsonParser {
 
         Person deserializedPerson = (Person)deserializeFromFile(personJsonFile, Person.class);
 
-//        serialize(deserializedPerson);
+        serializeToString(deserializedPerson);
 
         getPersonFriendsInfo(deserializedPerson);
     }
 
-    private static void serialize(Object object) {
+    private static void serializeToString(Object object) {
         Gson gson = new Gson();
         String json = gson.toJson(object);
         System.out.println(json);
@@ -44,6 +44,11 @@ public class GsonParser {
             System.out.println(friend.lastName);
             for (Phones phone : friend.phoneNumbers) {
                 System.out.println(" - phone type: " + phone.type + ", phone number : " + phone.number);
+            }
+            if (friend.friends != null) {
+                for (Person friendOfFriend : friend.friends) {
+                    System.out.println(" - friend: " + friendOfFriend.lastName);
+                }
             }
         }
     }

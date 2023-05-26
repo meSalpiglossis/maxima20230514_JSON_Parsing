@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.charset.Charset;
 
 import com.google.gson.Gson;
 
@@ -11,8 +12,9 @@ import person.Phones;
 public class GsonParser {
     public static void main(String[] args) {
         String personJsonFile = "src/main/resources/Person.json";
+        String charset = "UTF-8";
 
-        Person deserializedPerson = (Person)deserializeFromFile(personJsonFile, Person.class);
+        Person deserializedPerson = (Person)deserializeFromFile(personJsonFile, charset, Person.class);
 
         serializeToString(deserializedPerson);
 
@@ -25,10 +27,10 @@ public class GsonParser {
         System.out.println(json);
     }
 
-    private static Object deserializeFromFile(String fileName, Class classToDeserialize) {
+    private static Object deserializeFromFile(String fileName, String charset, Class classToDeserialize) {
         Object obj = null;
 
-        try (Reader reader = new FileReader(fileName)) {
+        try (Reader reader = new FileReader(fileName, Charset.forName(charset))) {
             Gson gson = new Gson();
             obj = gson.fromJson(reader, classToDeserialize);
         } catch (FileNotFoundException e) {
